@@ -1,0 +1,42 @@
+<html>
+<head>
+    <link href="https://fonts.googleapis.com/css?family=Crimson+Text|Open+Sans&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/milligram/1.3.0/milligram.css">
+
+    <style>
+        h1, h2, h3 {
+            font-family: 'Crimson Text', serif;
+        }
+
+        html, body, p {
+            font-family: 'Open Sans', sans-serif;
+        }
+
+    </style>
+</head>
+<body style="max-width: 800px; margin: auto">
+<h1 style="margin-top: 30px">Swahili Dictionary</h1>
+
+<form action="/" method="post" style="display: flex; flex-direction: row">
+    {% csrf_token %}
+    {{ form }}
+    <button style="margin-left: 10px" type="submit">Search</button>
+</form>
+
+<h1>{{ words.0.english_word }}</h1>
+
+{% for word in words %}
+    <h3 style="margin-bottom: 0">{{ word.swahili_word }}</h3>
+    {% if word.swahili_plural %} Plural: {{ word.swahili_plural }}<br/> {% endif %}
+    <p>{% if word.swahili_example and word.english_example %}{{ word.swahili_example }} -
+        {{ word.english_example }}<br/>{% endif %}
+        {#        {{ word.taxonomy }} <br/>#}
+        {#        {{ word.terminology }} <br/>#}
+        {#        {{ word.dialect }}<br/>#}
+        {% if word.related_words %} Related: {% for related_word in word.related_word_list %}
+            <a href="/sw-en/{{ related_word }}">{{ related_word }}</a>,{% endfor %}<br/>{% endif %}
+    </p>
+{% endfor %}
+</body>
+</html>
